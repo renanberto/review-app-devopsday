@@ -4,7 +4,7 @@ node() {
 
   stage('Verification'){
 
-    if (${PULL_ID}?.empty){
+    if (!PULL_ID){
       error("PULL_ID is empty.")
     }
 
@@ -14,7 +14,7 @@ node() {
   stage('Checkout Git'){
 
     checkout(
-      [$class: 'GitSCM', branches: [[name: 'refs/remotes/origin/pr/${PULL_ID}/head']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', refspec: '+refs/pull/*:refs/remotes/origin/pr/*', url: 'git@github.com:renanberto/test-review-app.git']]]
+      [$class: 'GitSCM', branches: [[name: 'refs/remotes/origin/pr/${PULL_ID}/head']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', refspec: '+refs/pull/*:refs/remotes/origin/pr/*', url: 'git@github.com:renanberto/review-app-devopsday.git']]]
     )
   }
 
@@ -38,9 +38,9 @@ node() {
   }
 
   stage('Create container'){
-    sh"""
-      docker run -p 4000:4000 -tid --name hello_world_devopsday devops-day-image
-    """
+    sh'''
+      docker run -p `shuf -i 20000-30000 -n 1`:4000 -tid --name hello_world_devopsday_${BUILD_NUMBER} devops-day-image
+    '''
   }
 
 }
