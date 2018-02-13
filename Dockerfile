@@ -10,4 +10,6 @@ EXPOSE 4000
 
 WORKDIR /go/src/review-app/app
 
+RUN go build /go/src/review-app/app/main.go
+
 ENTRYPOINT ["./main"]
