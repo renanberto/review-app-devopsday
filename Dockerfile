@@ -2,7 +2,8 @@ FROM golang:1.9
 
 RUN export GOPATH="/go" && \
     mkdir /go/src/review-app/ && \
-    go get gopkg.in/macaron.v1
+    go get gopkg.in/macaron.v1 && \
+    go get gopkg.in/mgo.v2
 
 ADD . /go/src/review-app/
 
