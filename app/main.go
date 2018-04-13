@@ -5,17 +5,20 @@ import (
 	"gopkg.in/mgo.v2"
 	"time"
 	"log"
+	"os"
 )
+
+var mongoServer = os.Getenv("MONGO_SERVER")
 
 func main(){
 	session := mongoConnect()
-
+	
 	m := macaron.Classic()
 	m.Map(session)
 	m.Use(macaron.Renderer())
-
+	
 	m.Get("/", index)
-
+	
 	m.Run()
 }
 
@@ -27,18 +30,16 @@ func index(ctx *macaron.Context) {
 
 func mongoConnect() *mgo.Session {
 	dialInfo := &mgo.DialInfo{
-	   Addrs:    []string{"192.168.1.5"},
-	   Timeout:  1 * time.Second,
-	   Database: "hands_on_docker",
-	   Username: "",
-	   Password: "",
+		Addrs:    []string{mongoServer},
+		Timeout:  1 * time.Second,
+		Database: "hands_on_docker",
+		Username: "",
+		Password: "",
 	}
-  
+	
 	session, err := mgo.DialWithInfo(dialInfo)
 	if err != nil {
-	   log.Fatal("Couldn't connect to mongodb :( ", err)
+		log.Fatal("Couldn't connect to mongodb :( ", err)
 	}
 	return session
-  }
-  
-  
+}
