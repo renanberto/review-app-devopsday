@@ -7,7 +7,7 @@ RUN export GOPATH="/go" && \
 
 ADD . /go/src/review-app/
 
-EXPOSE 4000
+EXPOSE 4001
 
 WORKDIR /go/src/review-app/app
 
